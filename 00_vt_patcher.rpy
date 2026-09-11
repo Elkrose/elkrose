@@ -1969,10 +1969,19 @@ init -4 python:
                     # Always increment total kids count
                     self.kids += 1
                     
-                    # Reset pregnancy state
+                    # Reset pregnancy state. knows_pregnant/player_knows_pregnant/preg_announce
+                    # were missing here (unlike the DryDOCK early-termination path a few hundred
+                    # lines below, which resets them correctly) -- left stuck True after a natural
+                    # birth, they permanently hid the Cherry HUD's birth-control/vaginal-status
+                    # breakdown (vt_huds/vt_girl_review_hud.rpy gates that whole block on
+                    # `not girl.player_knows_pregnant`) for the rest of the save, since nothing
+                    # else clears them until she conceives again.
                     self.preg_end_day = 0
                     self.pregnancy_phase = 0
                     self.pregnant = False
+                    self.knows_pregnant = False
+                    self.player_knows_pregnant = False
+                    self.preg_announce = False
                     self.just_had_baby = True
                     self.days_since_last_birth = 1
                     self.preg_father = None  # Clear father type after birth
@@ -2459,6 +2468,19 @@ init -14 python:
                 bucket["just_had_baby"] = False
             if "pregnancy_phase" not in bucket:
                 bucket["pregnancy_phase"] = 0
+            # Invariant repair, not a one-time migration: knows_pregnant/player_knows_pregnant/
+            # preg_announce should never be True while she isn't pregnant. A save from before the
+            # natural-birth reset above included these clears (it didn't -- see the comment there)
+            # can be stuck with a stale True from her last pregnancy, which permanently hides the
+            # Cherry HUD's birth-control/vaginal-status breakdown (vt_girl_review_hud.rpy gates it
+            # on `not girl.player_knows_pregnant`). Safe to re-assert unconditionally every load.
+            if not bucket["pregnant"]:
+                if bucket["knows_pregnant"]:
+                    bucket["knows_pregnant"] = False
+                if bucket["player_knows_pregnant"]:
+                    bucket["player_knows_pregnant"] = False
+                if bucket["preg_announce"]:
+                    bucket["preg_announce"] = False
 
             # Add fertility boost attribute
             if "fertility_boost" not in bucket:
@@ -2923,10 +2945,19 @@ init -14 python:
                     # Always increment total kids count
                     self.kids += 1
                     
-                    # Reset pregnancy state
+                    # Reset pregnancy state. knows_pregnant/player_knows_pregnant/preg_announce
+                    # were missing here (unlike the DryDOCK early-termination path a few hundred
+                    # lines below, which resets them correctly) -- left stuck True after a natural
+                    # birth, they permanently hid the Cherry HUD's birth-control/vaginal-status
+                    # breakdown (vt_huds/vt_girl_review_hud.rpy gates that whole block on
+                    # `not girl.player_knows_pregnant`) for the rest of the save, since nothing
+                    # else clears them until she conceives again.
                     self.preg_end_day = 0
                     self.pregnancy_phase = 0
                     self.pregnant = False
+                    self.knows_pregnant = False
+                    self.player_knows_pregnant = False
+                    self.preg_announce = False
                     self.just_had_baby = True
                     self.days_since_last_birth = 1
                     self.preg_father = None  # Clear father type after birth
