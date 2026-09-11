@@ -1,6 +1,6 @@
 Virginal Tracker Mod
 
-1.1.1
+1.1.2
 
 - Fixed a bug where a girl or mother who carried a pregnancy all the way to term would appear to
   never be able to get pregnant again. Giving birth correctly reset her pregnancy state, but not
