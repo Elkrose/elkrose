@@ -1,5 +1,18 @@
 Virginal Tracker Mod
 
+1.1.2
+
+- Fixed a bug where a girl or mother who carried a pregnancy all the way to term would appear to
+  never be able to get pregnant again. Giving birth correctly reset her pregnancy state, but not
+  her (or your) awareness that she'd ever been pregnant -- so the Cherry HUD's fertility/
+  birth-control/vaginal-status breakdown got stuck permanently hidden behind an empty
+  "Items Active: nothing" instead of showing her real status. Existing saves are corrected the
+  next time they load.
+
+1.1.0
+
+- Re-tagged 1.0.14 as 1.1.0
+
 1.0.14
 
 - NEW: pulling out now matters. When you go to finish inside a girl who's bare, not on birth control, and
